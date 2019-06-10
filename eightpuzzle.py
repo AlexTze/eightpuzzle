@@ -25,9 +25,11 @@ class Node:
     def __lt__(self, other):
         return self.f < other.f
 
-def swapListItem(targetList: list, srcRow: int, srcColumn: int, destRow: int, destColumn:int):
+
+def swapListItem(targetList: list, srcRow: int, srcColumn: int, destRow: int, destColumn: int):
     targetList[srcRow][srcColumn], targetList[destRow][destColumn] = \
-        targetList[destRow][destColumn], targetList[srcRow][srcColumn] 
+        targetList[destRow][destColumn], targetList[srcRow][srcColumn]
+
 
 def construct_path(current_node: Node):
     pass
@@ -41,11 +43,11 @@ def astar1(start: list, end: list):
     # calculates hamming distance
     def hammingDistance(this: Node, that: Node):
         k = 0
-        for i, j in this.position, that.position:
-            if i != j:
-                k += 1
+        for i, j in zip(this.position, that.position):
+            for m, n in zip(i, j):
+                if i != j:
+                    k += 1
         return k
-
 
     # Initialize start and end node
     start_node = Node(None, start)
@@ -57,7 +59,7 @@ def astar1(start: list, end: list):
 
     # Add the start node
     open_list.append(start_node)
-    
+
     while len(open_list) > 0:
 
         # Get the current node
@@ -75,8 +77,6 @@ def astar1(start: list, end: list):
         # Found the goal
         if current_node == end_node:
             return construct_path(current_node)
-
-
 
 
 def bfs(start, end):
