@@ -45,7 +45,7 @@ def astar1(start: list, end: list):
         k = 0
         for i, j in zip(this.position, that.position):
             for m, n in zip(i, j):
-                if i != j:
+                if m != n:
                     k += 1
         return k
 
