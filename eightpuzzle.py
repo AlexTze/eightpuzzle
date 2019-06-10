@@ -31,7 +31,7 @@ def swapListItem(targetList: list, srcRow: int, srcColumn: int, destRow: int, de
         targetList[destRow][destColumn], targetList[srcRow][srcColumn]
 
 
-def construct_path(current_node: Node):
+def constructPath(current_node: Node):
     pass
 
 
@@ -76,7 +76,7 @@ def astar1(start: list, end: list):
 
         # Found the goal
         if current_node == end_node:
-            return construct_path(current_node)
+            return constructPath(current_node)
 
 
 def bfs(start, end):
