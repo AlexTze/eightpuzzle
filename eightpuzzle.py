@@ -32,7 +32,12 @@ def swapListItem(targetList: list, srcRow: int, srcColumn: int, destRow: int, de
 
 
 def constructPath(current_node: Node):
-    pass
+    path = []
+    current = current_node
+    while current is not None:
+        path.append(current.position)
+        current = current.parent
+    return path[::-1]
 
 
 def astar1(start: list, end: list):
@@ -62,7 +67,7 @@ def astar1(start: list, end: list):
 
     while len(open_list) > 0:
 
-        # Get the current node
+        # Use the node with lowest f value as current node
         current_node = open_list[0]
         current_index = 0
         for index, item in enumerate(open_list):
