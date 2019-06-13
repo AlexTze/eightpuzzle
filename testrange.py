@@ -1,6 +1,3 @@
-from copy import deepcopy
-
-
 class Node:
     """
     Node class for pathfinding
@@ -19,7 +16,6 @@ class Node:
         self.f = self.g + self.h
 
 
-
 def constructPath(current_node: Node):
     path = []
     current = current_node
@@ -35,47 +31,44 @@ def findIndexOfZero(curr: Node):
             if curr.position[i][j] == 0:
                 return i, j
 
+
 def isInList(node, alist: list):
     for temp in alist:
         if temp.position == node.position:
             return True
     return False
-    
+
+
 directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 
 
 def DFS(start: list, end: list):
-    start_node = Node(None, start)
-    end_node = Node(None, end)
+    startNode = Node(None, start)
+    endNode = Node(None, end)
+    openList = []
+    closedList = []
+    openList.append(startNode)
+    while len(openList) > 0:
+        temp = openList.pop()
+        if temp.position == endNode.position:
+            print(constructPath(temp))
+        if not isInList(temp, closedList):
+            closedList.append(temp)
+            currRow, currCol = findIndexOfZero(temp)
+            for i in range(4):
+                nextNode = temp
+                nextNode.parent = temp
+                nextRow = currRow + directions[i][0]
+                nextCol = currCol + directions[i][1]
+                if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
+                    continue
+                nextNode.position[currRow][currCol],
+                nextNode.position[nextRow][nextCol] = \
+                    nextNode.position[nextRow][nextCol],
+                nextNode.position[currRow][currCol]
+                if not isInList(nextNode, openList):
+                    openList.append(nextNode)
 
-    open_list = []
-    closed_list = []
-    open_list.append(start_node)
-
-    while len(open_list) > 0:
-        current_node = open_list.pop()
-
-        if current_node.position == end_node.position:
-            print(constructPath(current_node))
-
-        currRow, currColumn = findIndexOfZero(current_node)
-
-        for i in range(4):
-            nextNode = deepcopy(current_node)
-            nextRow = currRow + directions[i][0]
-            nextColumn = currColumn + directions[i][1]
-            if nextRow > 2 or nextRow < 0 or nextColumn > 2 or nextColumn < 0:
-                continue
-            nextNode.position[currRow][currColumn], nextNode.position[nextRow][nextColumn] = \
-                nextNode.position[nextRow][nextColumn], nextNode.position[currRow][currColumn]
-
-            if (not isInList(nextNode, open_list)) and (not isInList(nextNode, closed_list)):
-                open_list.append(nextNode)
-
-        if not isInList(current_node, closed_list):
-            closed_list.append(current_node)
-
-    print(constructPath(current_node))
 
 start = [
     [1, 2, 3],
@@ -87,4 +80,4 @@ end = [
     [4, 5, 0],
     [7, 8, 6]
 ]
-DFS(start,end)
+DFS(start, end)
