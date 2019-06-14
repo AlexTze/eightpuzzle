@@ -94,13 +94,21 @@ def unknownEvaluationFunction(current: list, target: list):
             curr_1d.append(current[i][j])
             tgt_1d.append(target[i][j])
 
-    for x in range(9):
-        if x != 4:
-            if curr_1d[x] != tgt_1d[x]:
-                count += 2
-        else:
-            if curr_1d[x] != tgt_1d[x]:
-                count += 1
+    outer_layer_index = [0, 1, 2, 5, 8, 7, 6, 3]
+    curr_outer_layer = tgt_outer_layer = []
+    for i in outer_layer_index:
+        curr_outer_layer.append(curr_1d[i])
+        tgt_outer_layer.append(tgt_1d[i])
+
+    for i in range(7):
+        if curr_outer_layer[i + 1] != tgt_outer_layer[tgt_outer_layer.index(curr_outer_layer[i + 1])]:
+            count += 2
+
+    if curr_outer_layer[7] != tgt_outer_layer[tgt_outer_layer.index(curr_outer_layer[0])]:
+        count += 2
+
+    if curr_1d[4] != 0:
+        count += 1
 
     return count
 
@@ -433,10 +441,10 @@ def wrapper():
     """
     Wrapper test function
     """
-    testunit(DFS, start, end)
-    testunit(BFS, start, end)
-    testunit(astar1, start, end)
-    testunit(astar2, start, end)
+    # testunit(DFS, start, end)
+    # testunit(BFS, start, end)
+    # testunit(astar1, start, end)
+    # testunit(astar2, start, end)
     testunit(astar3, start, end)
 
 
