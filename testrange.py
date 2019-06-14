@@ -1,4 +1,7 @@
 from copy import deepcopy
+from time import time
+
+
 class Node:
     """
     Node class for pathfinding
@@ -25,7 +28,9 @@ def constructPath(current_node: Node):
         current = current.parent
     path.reverse()
     for item in path:
-        print(item)
+        for row in item:
+            print(row)
+        print()
 
 
 def findIndexOfZero(curr: Node):
@@ -41,6 +46,13 @@ def isInList(node, alist: list):
             return True
     return False
 
+def hammingDistance(this: list, that: list):
+    count = 0
+    for i in range(3):
+        for j in range(3):
+            if this[i][j] != that[i][j]:
+                count += 1
+    return count
 
 directions = [
     [1, 0],
@@ -54,6 +66,8 @@ def DFS(start: list, end: list):
     """
     Depth-first search algorithm for eight puzzle problem.
     """
+    print("Running depth-first search...")
+
     # initialize start and end node
     startNode = Node(None, start)
     endNode = Node(None, end)
@@ -80,7 +94,7 @@ def DFS(start: list, end: list):
             return constructPath(temp)
         
         # limit search depth
-        if temp.g > 10:
+        if temp.g > 15:
             continue
 
         if not isInList(temp, closedList):
@@ -107,10 +121,15 @@ def DFS(start: list, end: list):
                 openList.append(nextNode)
                 expandedNodes += 1
 
+    # failed to find a path within depth constraint
+    print("The algorithm attempted but failed to find a path with {} expanded nodes.".format(expandedNodes))
+
 def BFS(start: list, end: list):
     """
     Breadth-first search algorithm for eight puzzle problem.
     """
+    print("Running breadth-first search...")
+
     # initialize start and end node
     startNode = Node(None, start)
     endNode = Node(None, end)
@@ -159,6 +178,60 @@ def BFS(start: list, end: list):
                 openList.append(nextNode)
                 expandedNodes += 1
 
+def astar1(start: list, end: list):
+    """A* search algorithm, with h as hamming distance"""
+    print("Running A* search variant 1...")
+
+    # initialize start and end node
+    startNode = Node(None, start)
+    endNode = Node(None, end)
+
+    # initialize open and closed list
+    openList = []
+    closedList = []
+
+    # counter for expanded nodes
+    expandedNodes = 0
+
+    # append start node to open list
+    openList.append(startNode)
+    expandedNodes += 1
+
+    while len(openList) > 0:
+        openList.sort(key=lambda x: x.f)
+        temp = openList.pop(0)
+
+        # found a path
+        if temp.position == endNode.position:
+            print("A*1 expanded nodes: {}".format(expandedNodes))
+            return constructPath(temp)
+
+        if not isInList(temp, closedList):
+            closedList.append(temp)
+
+        # row and column of element '0'
+        currRow, currCol = findIndexOfZero(temp)
+
+        # iterate through possible moves
+        for i in range(4):
+            nextNode = deepcopy(temp)
+            nextNode.parent = temp
+            nextRow = currRow + directions[i][0]
+            nextCol = currCol + directions[i][1]
+
+            # discard out-of-bound moves 
+            if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
+                continue
+            
+            nextNode.position[currRow][currCol], nextNode.position[nextRow][nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
+            nextNode.g += 1
+            nextNode.h = hammingDistance(nextNode.position, end)
+            nextNode.f = nextNode.g + nextNode.h
+
+            # add all eligible moves to open list
+            if not isInList(nextNode, openList):
+                openList.append(nextNode)
+                expandedNodes += 1
 
 start = [
     [1, 2, 3],
@@ -167,9 +240,16 @@ start = [
 ]
 end = [
     [1, 2, 3],
-    [4, 5, 0],
-    [7, 8, 6]
+    [4, 0, 5],
+    [6, 7, 8]
 ]
 
-DFS(start, end)
-BFS(start,end)
+# dfs_start = time()
+# DFS(start, end)
+# dfs_end = time()
+# print("Elapsed time: {}".format(dfs_end - dfs_start))
+# bfs_start = time()
+# BFS(start, end)
+# bfs_end = time()
+# print("Elapsed time: {}".format(bfs_end - bfs_start))
+astar1(start,end)
