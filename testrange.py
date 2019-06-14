@@ -52,6 +52,7 @@ def isInList(node, alist: list):
             return True
     return False
 
+
 def hammingDistance(this: list, that: list):
     """
     Calculates the hamming distance between two 3x3 lists
@@ -62,6 +63,7 @@ def hammingDistance(this: list, that: list):
             if this[i][j] != that[i][j]:
                 count += 1
     return count
+
 
 def manhattanDistance(current: list, target: list):
     """
@@ -78,9 +80,32 @@ def manhattanDistance(current: list, target: list):
         count += abs(tgt_1d.index(x) - curr_1d.index(x))
     return count
 
-def unknownEvaluateFunction(current: list, target: list):
-    pass
 
+def unknownEvaluationFunction(current: list, target: list):
+    """
+    Some really tricky evaluation function, as shown in:
+    Ma, S. P. et al(2004). Search Problems. In Artificial Intelligence(pp. 26-49). Beijing, Beijing: Tsinghua University Press
+    """
+    count = 0
+    curr_1d = []
+    tgt_1d = []
+    for i in range(3):
+        for j in range(3):
+            curr_1d.append(current[i][j])
+            tgt_1d.append(target[i][j])
+
+    for x in range(9):
+        if x != 4:
+            if curr_1d[x] != tgt_1d[x]:
+                count += 2
+        else:
+            if curr_1d[x] != tgt_1d[x]:
+                count += 1
+
+    return count
+
+
+# stores directions of node expansion
 directions = [
     [1, 0],
     [-1, 0],
@@ -119,7 +144,7 @@ def DFS(start: list, end: list):
         if temp.position == endNode.position:
             print("DFS expanded nodes: {}".format(expandedNodes))
             return constructPath(temp)
-        
+
         # limit search depth
         if temp.g > 15:
             continue
@@ -137,19 +162,22 @@ def DFS(start: list, end: list):
             nextRow = currRow + directions[i][0]
             nextCol = currCol + directions[i][1]
 
-            # discard out-of-bound moves 
+            # discard out-of-bound moves
             if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
                 continue
 
             # add all eligible moves to open list
-            nextNode.position[currRow][currCol], nextNode.position[nextRow][nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
+            nextNode.position[currRow][currCol], nextNode.position[nextRow][
+                nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
             if not isInList(nextNode, openList):
                 nextNode.g += 1
                 openList.append(nextNode)
                 expandedNodes += 1
 
     # failed to find a path within depth constraint
-    print("The algorithm attempted but failed to find a path with {} expanded nodes.".format(expandedNodes))
+    print("The algorithm attempted but failed to find a path with {} expanded nodes.".format(
+        expandedNodes))
+
 
 def BFS(start: list, end: list):
     """
@@ -195,15 +223,17 @@ def BFS(start: list, end: list):
             nextRow = currRow + directions[i][0]
             nextCol = currCol + directions[i][1]
 
-            # discard out-of-bound moves 
+            # discard out-of-bound moves
             if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
                 continue
-            
+
             # add all eligible moves to open list
-            nextNode.position[currRow][currCol], nextNode.position[nextRow][nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
+            nextNode.position[currRow][currCol], nextNode.position[nextRow][
+                nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
             if not isInList(nextNode, openList):
                 openList.append(nextNode)
                 expandedNodes += 1
+
 
 def astar1(start: list, end: list):
     """A* search algorithm, with h as hamming distance"""
@@ -230,7 +260,7 @@ def astar1(start: list, end: list):
 
         # found a path
         if temp.position == endNode.position:
-            print("A*1 expanded nodes: {}".format(expandedNodes))
+            print("A* 1 expanded nodes: {}".format(expandedNodes))
             return constructPath(temp)
 
         if not isInList(temp, closedList):
@@ -246,11 +276,12 @@ def astar1(start: list, end: list):
             nextRow = currRow + directions[i][0]
             nextCol = currCol + directions[i][1]
 
-            # discard out-of-bound moves 
+            # discard out-of-bound moves
             if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
                 continue
-            
-            nextNode.position[currRow][currCol], nextNode.position[nextRow][nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
+
+            nextNode.position[currRow][currCol], nextNode.position[nextRow][
+                nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
             nextNode.g += 1
             nextNode.h = hammingDistance(nextNode.position, end)
             nextNode.f = nextNode.g + nextNode.h
@@ -259,6 +290,7 @@ def astar1(start: list, end: list):
             if not isInList(nextNode, openList):
                 openList.append(nextNode)
                 expandedNodes += 1
+
 
 def astar2(start: list, end: list):
     """A* search algorithm, with h as sum of manhattan distance of dices"""
@@ -285,7 +317,7 @@ def astar2(start: list, end: list):
 
         # found a path
         if temp.position == endNode.position:
-            print("A*1 expanded nodes: {}".format(expandedNodes))
+            print("A* 2 expanded nodes: {}".format(expandedNodes))
             return constructPath(temp)
 
         if not isInList(temp, closedList):
@@ -301,11 +333,12 @@ def astar2(start: list, end: list):
             nextRow = currRow + directions[i][0]
             nextCol = currCol + directions[i][1]
 
-            # discard out-of-bound moves 
+            # discard out-of-bound moves
             if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
                 continue
-            
-            nextNode.position[currRow][currCol], nextNode.position[nextRow][nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
+
+            nextNode.position[currRow][currCol], nextNode.position[nextRow][
+                nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
             nextNode.g += 1
             nextNode.h = manhattanDistance(nextNode.position, end)
             nextNode.f = nextNode.g + nextNode.h
@@ -314,7 +347,66 @@ def astar2(start: list, end: list):
             if not isInList(nextNode, openList):
                 openList.append(nextNode)
                 expandedNodes += 1
-                
+
+
+def astar3(start: list, end: list):
+    """A* search algorithm, with h as """
+    print("Running A* search variant 3...")
+
+    # initialize start and end node
+    startNode = Node(None, start)
+    endNode = Node(None, end)
+
+    # initialize open and closed list
+    openList = []
+    closedList = []
+
+    # counter for expanded nodes
+    expandedNodes = 0
+
+    # append start node to open list
+    openList.append(startNode)
+    expandedNodes += 1
+
+    while len(openList) > 0:
+        openList.sort(key=lambda x: x.f)
+        temp = openList.pop(0)
+
+        # found a path
+        if temp.position == endNode.position:
+            print("A* 3 expanded nodes: {}".format(expandedNodes))
+            return constructPath(temp)
+
+        if not isInList(temp, closedList):
+            closedList.append(temp)
+
+        # row and column of element '0'
+        currRow, currCol = findIndexOfZero(temp)
+
+        # iterate through possible moves
+        for i in range(4):
+            nextNode = deepcopy(temp)
+            nextNode.parent = temp
+            nextRow = currRow + directions[i][0]
+            nextCol = currCol + directions[i][1]
+
+            # discard out-of-bound moves
+            if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
+                continue
+
+            nextNode.position[currRow][currCol], nextNode.position[nextRow][
+                nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
+            nextNode.g += 1
+            nextNode.h = manhattanDistance(
+                nextNode.position, end) + 3 * unknownEvaluationFunction(nextNode.position, end)
+            nextNode.f = nextNode.g + nextNode.h
+
+            # add all eligible moves to open list
+            if not isInList(nextNode, openList):
+                openList.append(nextNode)
+                expandedNodes += 1
+
+
 start = [
     [1, 2, 3],
     [4, 0, 5],
@@ -326,12 +418,27 @@ end = [
     [6, 7, 8]
 ]
 
-# dfs_start = time()
-# DFS(start, end)
-# dfs_end = time()
-# print("Elapsed time: {}".format(dfs_end - dfs_start))
-# bfs_start = time()
-# BFS(start, end)
-# bfs_end = time()
-# print("Elapsed time: {}".format(bfs_end - bfs_start))
-# astar1(start,end)
+
+def testunit(func, start, end):
+    """
+    Test unit that records elapsed time
+    """
+    start_time = time()
+    func(start, end)
+    end_time = time()
+    print("Elapsed time: {}".format(end_time - start_time))
+
+
+def wrapper():
+    """
+    Wrapper test function
+    """
+    testunit(DFS, start, end)
+    testunit(BFS, start, end)
+    testunit(astar1, start, end)
+    testunit(astar2, start, end)
+    testunit(astar3, start, end)
+
+
+if __name__ == "__main__":
+    wrapper()
