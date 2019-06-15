@@ -103,5 +103,5 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# test output
-results.txt
+# elapsed time output
+elapsed_time.txt

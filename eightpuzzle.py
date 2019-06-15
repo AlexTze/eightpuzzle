@@ -134,6 +134,7 @@ def DFS(start: list, end: list):
 
     # counter for expanded nodes
     expandedNodes = 0
+    generatedNodes = 0
 
     # initialize open and closed list
     openList = []
@@ -150,7 +151,8 @@ def DFS(start: list, end: list):
 
         # found a path
         if temp.position == endNode.position:
-            print("DFS expanded nodes: {}".format(expandedNodes))
+            print("DFS expanded nodes: {}, generated nodes: {}".format(
+                expandedNodes, generatedNodes))
             return constructPath(temp)
 
         # limit search depth
@@ -159,6 +161,7 @@ def DFS(start: list, end: list):
 
         if not isInList(temp, closedList):
             closedList.append(temp)
+            generatedNodes += 1
 
         # row and column of element '0'
         currRow, currCol = findIndexOfZero(temp)
@@ -204,6 +207,7 @@ def BFS(start: list, end: list):
 
     # counter for expanded nodes
     expandedNodes = 0
+    generatedNodes = 0
 
     # append start node to open list
     openList.append(startNode)
@@ -216,11 +220,13 @@ def BFS(start: list, end: list):
 
         # found a path
         if temp.position == endNode.position:
-            print("BFS expanded nodes: {}".format(expandedNodes))
+            print("BFS expanded nodes: {}, generated nodes: {}".format(
+                expandedNodes, generatedNodes))
             return constructPath(temp)
 
         if not isInList(temp, closedList):
             closedList.append(temp)
+            generatedNodes += 1
 
         # row and column of element '0'
         currRow, currCol = findIndexOfZero(temp)
@@ -258,6 +264,7 @@ def astar1(start: list, end: list):
 
     # counter for expanded nodes
     expandedNodes = 0
+    generatedNodes = 0
 
     # append start node to open list
     openList.append(startNode)
@@ -271,11 +278,13 @@ def astar1(start: list, end: list):
 
         # found a path
         if temp.position == endNode.position:
-            print("A* 1 expanded nodes: {}".format(expandedNodes))
+            print("A* 1 expanded nodes: {}, generated nodes: {}".format(
+                expandedNodes, generatedNodes))
             return constructPath(temp)
 
         if not isInList(temp, closedList):
             closedList.append(temp)
+            generatedNodes += 1
 
         # row and column of element '0'
         currRow, currCol = findIndexOfZero(temp)
@@ -321,6 +330,7 @@ def astar2(start: list, end: list):
 
     # counter for expanded nodes
     expandedNodes = 0
+    generatedNodes = 0
 
     # append start node to open list
     openList.append(startNode)
@@ -334,11 +344,13 @@ def astar2(start: list, end: list):
 
         # found a path
         if temp.position == endNode.position:
-            print("A* 2 expanded nodes: {}".format(expandedNodes))
+            print("A* 2 expanded nodes: {}, generated nodes: {}".format(
+                expandedNodes, generatedNodes))
             return constructPath(temp)
 
         if not isInList(temp, closedList):
             closedList.append(temp)
+            generatedNodes += 1
 
         # row and column of element '0'
         currRow, currCol = findIndexOfZero(temp)
@@ -384,6 +396,7 @@ def astar3(start: list, end: list):
 
     # counter for expanded nodes
     expandedNodes = 0
+    generatedNodes = 0
 
     # append start node to open list
     openList.append(startNode)
@@ -397,11 +410,13 @@ def astar3(start: list, end: list):
 
         # found a path
         if temp.position == endNode.position:
-            print("A* 3 expanded nodes: {}".format(expandedNodes))
+            print("A* 3 expanded nodes: {}, generated nodes: {}".format(
+                expandedNodes, generatedNodes))
             return constructPath(temp)
 
         if not isInList(temp, closedList):
             closedList.append(temp)
+            generatedNodes += 1
 
         # row and column of element '0'
         currRow, currCol = findIndexOfZero(temp)
@@ -444,7 +459,7 @@ def testunit(func, start, end):
     resultStr = ""
     resultStr += "Function:\t{}\nElapsed time:\t{}\n".format(func.__name__,
                                                              end_time - start_time)
-    fout = open('results.txt', 'a')
+    fout = open('elapsed_time.txt', 'a')
     fout.write(resultStr)
     fout.close()
     # print("Elapsed time: {}".format(end_time - start_time))
