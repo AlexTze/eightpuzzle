@@ -174,7 +174,8 @@ def DFS(start: list, end: list):
             if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
                 continue
 
-            # add all eligible moves to open list
+            # add all eligible moves to open list, make necessary changes to node attributes
+            # in DFS, the g value needs to be incremented by 1 each time the node is expanded
             nextNode.position[currRow][currCol], nextNode.position[nextRow][
                 nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
             if not isInList(nextNode, openList):
@@ -263,6 +264,8 @@ def astar1(start: list, end: list):
     expandedNodes += 1
 
     while len(openList) > 0:
+        # We use the open list as a priority queue in A* search
+        # pop(0) will pop out the element with least f value
         openList.sort(key=lambda x: x.f)
         temp = openList.pop(0)
 
@@ -288,6 +291,10 @@ def astar1(start: list, end: list):
             if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
                 continue
 
+            # make necessary changes to node attributes
+            # g: traverse cost (depth when used in DFS search)
+            # h: heuristic search cost
+            # f = g + h
             nextNode.position[currRow][currCol], nextNode.position[nextRow][
                 nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
             nextNode.g += 1
@@ -320,6 +327,8 @@ def astar2(start: list, end: list):
     expandedNodes += 1
 
     while len(openList) > 0:
+        # We use the open list as a priority queue in A* search
+        # pop(0) will pop out the element with least f value
         openList.sort(key=lambda x: x.f)
         temp = openList.pop(0)
 
@@ -345,6 +354,10 @@ def astar2(start: list, end: list):
             if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
                 continue
 
+            # make necessary changes to node attributes
+            # g: traverse cost (depth when used in DFS search)
+            # h: heuristic search cost
+            # f = g + h
             nextNode.position[currRow][currCol], nextNode.position[nextRow][
                 nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
             nextNode.g += 1
@@ -377,6 +390,8 @@ def astar3(start: list, end: list):
     expandedNodes += 1
 
     while len(openList) > 0:
+        # We use the open list as a priority queue in A* search
+        # pop(0) will pop out the element with least f value
         openList.sort(key=lambda x: x.f)
         temp = openList.pop(0)
 
@@ -402,6 +417,10 @@ def astar3(start: list, end: list):
             if nextRow > 2 or nextRow < 0 or nextCol > 2 or nextCol < 0:
                 continue
 
+            # make necessary changes to node attributes
+            # g: traverse cost (depth when used in DFS search)
+            # h: heuristic search cost
+            # f = g + h
             nextNode.position[currRow][currCol], nextNode.position[nextRow][
                 nextCol] = nextNode.position[nextRow][nextCol], nextNode.position[currRow][currCol]
             nextNode.g += 1
@@ -413,18 +432,6 @@ def astar3(start: list, end: list):
             if not isInList(nextNode, openList):
                 openList.append(nextNode)
                 expandedNodes += 1
-
-
-start = [
-    [1, 2, 3],
-    [4, 0, 5],
-    [7, 8, 6]
-]
-end = [
-    [1, 2, 3],
-    [4, 0, 5],
-    [6, 7, 8]
-]
 
 
 def testunit(func, start, end):
@@ -441,6 +448,19 @@ def testunit(func, start, end):
     fout.write(resultStr)
     fout.close()
     # print("Elapsed time: {}".format(end_time - start_time))
+
+
+# test cases
+start = [
+    [1, 2, 3],
+    [4, 0, 5],
+    [7, 8, 6]
+]
+end = [
+    [1, 2, 3],
+    [4, 0, 5],
+    [6, 7, 8]
+]
 
 
 def wrapper():
