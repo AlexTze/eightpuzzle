@@ -358,7 +358,7 @@ def astar2(start: list, end: list):
 
 
 def astar3(start: list, end: list):
-    """A* search algorithm, with h as """
+    """A* search algorithm, with h as (manhattan distance) + 3 * (tricky evaluation function)"""
     print("Running A* search variant 3...")
 
     # initialize start and end node
@@ -434,17 +434,23 @@ def testunit(func, start, end):
     start_time = time()
     func(start, end)
     end_time = time()
-    print("Elapsed time: {}".format(end_time - start_time))
+    resultStr = ""
+    resultStr += "Function:\t{}\nElapsed time:\t{}\n".format(func.__name__,
+                                                             end_time - start_time)
+    fout = open('results.txt', 'a')
+    fout.write(resultStr)
+    fout.close()
+    # print("Elapsed time: {}".format(end_time - start_time))
 
 
 def wrapper():
     """
     Wrapper test function
     """
-    # testunit(DFS, start, end)
-    # testunit(BFS, start, end)
-    # testunit(astar1, start, end)
-    # testunit(astar2, start, end)
+    testunit(DFS, start, end)
+    testunit(BFS, start, end)
+    testunit(astar1, start, end)
+    testunit(astar2, start, end)
     testunit(astar3, start, end)
 
 
